@@ -1,0 +1,10 @@
+{
+  "scripts": [
+    "common.js",
+    "categories.js"
+  ],
+  "styles": [
+    "common.css",
+    "categories.css"
+  ]
+}

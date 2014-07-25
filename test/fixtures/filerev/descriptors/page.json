@@ -1,0 +1,13 @@
+{
+  "js": [
+    "one.js",
+    "two.js"
+  ],
+  "css": [
+    "one.css",
+    "two.css"
+  ],
+  "images": [
+    "*.{png,jpg,webp}"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "scripts": [
+    "common.js",
+    "home.js"
+  ],
+  "styles": [
+    "base.css",
+    "home.css"
+  ]
+}

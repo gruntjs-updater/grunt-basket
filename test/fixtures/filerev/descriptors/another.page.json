@@ -1,0 +1,12 @@
+{
+  "js": [
+    "three.js"
+  ],
+  "css": [
+    "one.css",
+    "three.css"
+  ],
+  "images": [
+    "*.{png,jpg,webp}"
+  ]
+}

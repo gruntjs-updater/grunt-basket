@@ -1,0 +1,10 @@
+{
+  "js/three.js": "http://cdn.experiment.com/assets/js/three.c5ecc981.js",
+  "css/one.css": "http://cdn.experiment.com/assets/css/one.a4cab2d5.css",
+  "css/three.css": "http://cdn.experiment.com/assets/css/three.bbb27b0d.css",
+  "images/another-dummy.jpg": "http://cdn.experiment.com/assets/images/another-dummy.54468974.jpg",
+  "images/dummy.jpg": "http://cdn.experiment.com/assets/images/dummy.e01a4390.jpg",
+  "js/one.js": "http://cdn.experiment.com/assets/js/one.c1c26481.js",
+  "js/two.js": "http://cdn.experiment.com/assets/js/two.a20bb675.js",
+  "css/two.css": "http://cdn.experiment.com/assets/css/two.3eb8b6a5.css"
+}
