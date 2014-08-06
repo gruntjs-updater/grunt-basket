@@ -154,15 +154,6 @@ module.exports = function(grunt) {
     'nodeunit:noFilerev'
   ]);
 
-  // Example of use case.
-  grunt.registerTask('usage', [
-    'clean',
-    'basket:filerevOptions',
-    'filerev',
-    'basketMetadata:cdnWithFolder',
-    'print'
-  ]);
-
   grunt.registerTask('print', 'Show filerev summary object', function() {
     grunt.log.writeln(inspect(grunt.filerev.summary));
   });
