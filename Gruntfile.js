@@ -16,8 +16,8 @@ module.exports = function(grunt) {
       all: [
         'Gruntfile.js',
         'tasks/*.js',
-        '<%= nodeunit.default_options %>',
-        '<%= nodeunit.filerev_options %>'
+        '<%= nodeunit.defaultOptions %>',
+        '<%= nodeunit.filerevOptions %>'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -29,17 +29,27 @@ module.exports = function(grunt) {
     },
 
     basket: {
-      default_options: {
+      defaultOptions: {
         options: {
-          descriptors: 'test/fixtures/basic/descriptors',
-          assets: 'test/fixtures/basic/src'
+          descriptors: 'test/fixtures/basic/descriptors/*.json',
+          assets: 'test/fixtures/basic/src/'
         }
       },
-      filerev_options: {
+      filerevOptions: {
         options: {
           filerev: true,
-          descriptors: 'test/fixtures/filerev/descriptors',
-          assets: 'test/fixtures/filerev/src',
+          descriptors: 'test/fixtures/filerev/descriptors/*.json',
+          assets: 'test/fixtures/filerev/src/',
+          dest: '.tmp/'
+        }
+      },
+      noFilerev: {
+        options: {
+          descriptors: [
+            'test/fixtures/nofilerev/descriptors/*.json',
+            '!**/exclude.json'
+          ],
+          assets: 'test/fixtures/nofilerev/src/',
           dest: '.tmp/'
         }
       }
@@ -47,25 +57,39 @@ module.exports = function(grunt) {
 
     basketMetadata: {
       options: {
-        assets: '<%= basket.filerev_options.options.assets %>/',
-        dest: '<%= basket.filerev_options.options.dest %>',
+        assets: 'test/fixtures/filerev/src/',
+        dest: '.tmp/',
         outputDir: '.config'
       },
+
       local: {
         outputName: 'local.json',
         webroot: 'build'
       },
+
       cdn: {
         outputName: 'cdn.json',
         webroot: '//cdn.experiment.com'
       },
+
       cdnWithProtocol: {
         outputName: 'cdnWithProtocol.json',
         webroot: 'http://cdn.experiment.com'
       },
+
       cdnWithFolder: {
         outputName: 'cdnWithFolder.json',
         webroot: 'http://cdn.experiment.com/assets/'
+      },
+
+      noFilerev: {
+        options: {
+          assets: 'test/fixtures/nofilerev/src/',
+          dest: '.tmp/',
+          outputDir: '.config/'
+        },
+        outputName: 'nofilerev.json',
+        webroot: '/assets'
       }
     },
 
@@ -82,9 +106,10 @@ module.exports = function(grunt) {
 
     // Unit tests.
     nodeunit: {
-      default_options: ['test/basket_test.js'],
-      filerev_options: ['test/basket_filerev_test.js'],
-      metadata_options: ['test/metadata_test.js']
+      defaultOptions: ['test/basket_test.js'],
+      filerevOptions: ['test/basket_filerev_test.js'],
+      metadataOptions: ['test/metadata_test.js'],
+      noFilerev: ['test/no_filerev_test.js']
     }
   });
 
@@ -98,38 +123,55 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-filerev');
   grunt.loadNpmTasks('grunt-usemin');
 
-  grunt.registerTask('test_default_options', [
+  grunt.registerTask('testDefaultOptions', [
     'clean',
-    'basket:default_options',
-    'nodeunit:default_options'
+    'basket:defaultOptions',
+    'nodeunit:defaultOptions'
   ]);
 
-  grunt.registerTask('test_filerev_options', [
+  grunt.registerTask('testFilerevOptions', [
     'clean',
-    'basket:filerev_options',
+    'basket:filerevOptions',
     'filerev',
-    'nodeunit:filerev_options'
+    'nodeunit:filerevOptions'
   ]);
 
-  grunt.registerTask('test_metadata_options', [
+  grunt.registerTask('testMetadataOptions', [
     'clean',
-    'basket:filerev_options',
+    'basket:filerevOptions',
     'filerev',
-    'basketMetadata',
-    'nodeunit:metadata_options'
+    'basketMetadata:local',
+    'basketMetadata:cdn',
+    'basketMetadata:cdnWithProtocol',
+    'basketMetadata:cdnWithFolder',
+    'nodeunit:metadataOptions'
+  ]);
+
+  grunt.registerTask('testNoFilrevPresentOptions', [
+    'clean',
+    'basket:noFilerev',
+    'basketMetadata:noFilerev',
+    'nodeunit:noFilerev'
   ]);
 
   // Example of use case.
   grunt.registerTask('usage', [
     'clean',
-    'basket:filerev_options',
+    'basket:filerevOptions',
     'filerev',
-    'usemin'
+    'basketMetadata:cdnWithFolder',
+    'print'
   ]);
 
   grunt.registerTask('print', 'Show filerev summary object', function() {
     grunt.log.writeln(inspect(grunt.filerev.summary));
   });
 
-  grunt.registerTask('default', ['jshint', 'test_default_options', 'test_filerev_options', 'test_metadata_options']);
+  grunt.registerTask('default', [
+    'jshint',
+    'testDefaultOptions',
+    'testFilerevOptions',
+    'testMetadataOptions',
+    'testNoFilrevPresentOptions'
+  ]);
 };

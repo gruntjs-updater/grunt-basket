@@ -1,0 +1,10 @@
+{
+  "src": [
+    "js/{one,two}.js",
+    "css/{one,two}.css",
+    "images/*.{png,jpg,webp}"
+  ],
+  "expand": true,
+  "cwd": "test/fixtures/filerev/src/",
+  "dest": ".tmp/"
+}

@@ -1,10 +1,4 @@
-{
-  "scripts": [
-    "common.js",
-    "categories.js"
-  ],
-  "styles": [
-    "common.css",
-    "categories.css"
-  ]
-}
+[
+  "scripts/{common,categories}.js",
+  "styles/{common,categories}.css"
+]

@@ -12,16 +12,6 @@ var _ = require('lodash');
 var path = require('path');
 var url = require('url');
 
-function pathHelper(src) {
-  var urlParse = url.parse(src, false, true);
-
-  if (urlParse.host) {
-    return _.partial(url.resolve, src);
-  } else {
-    return _.partial(path.join, src);
-  }
-}
-
 module.exports = function(grunt) {
 
   grunt.registerMultiTask('basketMetadata', 'consolidate url rewrites in different json files based on environment configurations', function() {
@@ -29,15 +19,29 @@ module.exports = function(grunt) {
         outputDir: '.config'
       }),
       ifErrors = false,
-      datasource = grunt.filerev &&  grunt.filerev.summary || false,
+      datasource = grunt.filerev &&  grunt.filerev.summary || grunt.basket &&  grunt.basket.summary || false,
       targetConfig = this.data;
 
-    if (grunt.file.isDir(options.assets) === false) {
+    function pathHelper(src) {
+      var urlParse = url.parse(src, false, true);
+
+      grunt.log.debug('pathHelper =>', util.inspect( src, {depth: null}));
+
+      if (urlParse.host) {
+        return _.partial(url.resolve, src);
+      } else {
+        return _.partial(path.join, src);
+      }
+    }
+
+    grunt.log.debug('datasource =>', util.inspect( datasource, {depth: null}));
+
+    if (!_.isString(options.assets) || grunt.file.isDir(options.assets) === false) {
       grunt.log.error('Please provide your original assets directory');
       ifErrors = true;
     }
 
-    if (grunt.file.isDir(options.dest) === false) {
+    if (!_.isString(options.dest)) {
       grunt.log.error('Please provide the destination of filerev assets');
       ifErrors = true;
     }
@@ -55,14 +59,25 @@ module.exports = function(grunt) {
     // Fail by returning false if this task had errors
     if (ifErrors) { return false; }
 
+    grunt.log.debug('targetConfig =>', util.inspect( targetConfig, {depth: null}));
+
     var pathProcessor = pathHelper(targetConfig.webroot);
 
+    grunt.log.debug('datasource =>', util.inspect( datasource, {depth: null}));
+
     var rewrites = _.reduce(datasource, function(result, translation, originalPath) {
+
+      grunt.log.debug('text =>', util.inspect( translation.slice(options.dest.length), {depth: null}));
+
       result[originalPath.slice(options.assets.length)] = pathProcessor(translation.slice(options.dest.length));
       return result;
     }, {});
 
+    grunt.log.debug(options.outputDir, targetConfig.outputName);
+
     grunt.file.write(path.join(options.outputDir, targetConfig.outputName), JSON.stringify(rewrites, null, '    '));
+
+    grunt.log.ok('Plugin finished successfully');
   });
 
 };

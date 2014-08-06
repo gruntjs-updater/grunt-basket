@@ -2,6 +2,7 @@
 
 var grunt = require('grunt');
 var util = require('util');
+var fs = require('fs');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -24,13 +25,12 @@ var util = require('util');
 */
 
 exports.basket = {
-  defaultOptions: function(test) {
+  basketSummaryMustBePresent: function(test) {
     test.expect(1);
 
     test.deepEqual(
-      grunt.basket,
-      grunt.file.readJSON('test/fixtures/basic/expected.json'),
-      'Descriptors are stored under the plugin name for future usage'
+      grunt.basket.summary,
+      grunt.file.readJSON('test/fixtures/nofilerev/summary.json')
     );
 
     test.done();

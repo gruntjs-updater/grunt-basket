@@ -24,7 +24,7 @@ var fs = require('fs');
     test.ifError(value)
 */
 
-exports.pages_config = {
+exports.basket = {
   local: function(test) {
     test.expect(1);
 

@@ -24,16 +24,19 @@ var fs = require('fs');
     test.ifError(value)
 */
 
-exports.pages_config = {
-  filerev_options: function(test) {
-    test.expect(1);
+exports.basket = {
+  filerevOptions: function(test) {
+    test.expect(2);
 
-    test.deepEqual(grunt.config.get('filerev')['test/fixtures/filerev/descriptors/page.json'], {
-      src: ['js/one.js', 'js/two.js', 'css/one.css', 'css/two.css', 'images/*.{png,jpg,webp}'],
-      expand: true,
-      cwd: grunt.config.get('basket').filerev_options.options.assets,
-      dest: grunt.config.get('basket').filerev_options.options.dest
-    });
+    test.deepEqual(
+      grunt.config.get('filerev')['test/fixtures/filerev/descriptors/page.json'],
+      grunt.file.readJSON('test/fixtures/filerev/expected.page.json')
+    );
+
+    test.deepEqual(
+      grunt.config.get('filerev')['test/fixtures/filerev/descriptors/another.page.json'],
+      grunt.file.readJSON('test/fixtures/filerev/expected.another.page.json')
+    );
 
     test.done();
   }

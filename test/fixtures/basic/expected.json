@@ -1,0 +1,20 @@
+{
+  "files": [
+    "test/fixtures/basic/descriptors/categories.json",
+    "test/fixtures/basic/descriptors/home.json"
+  ],
+  "descriptors": {
+    "test/fixtures/basic/descriptors/categories.json":
+      [ "scripts/{common,categories}.js",
+        "styles/{common,categories}.css" ],
+    "test/fixtures/basic/descriptors/home.json":
+      [ "js/{common,home}.js",
+        "css/{common,home}.css" ]
+  },
+  "summary": {
+    "js/common.js": "/assets/js/common.js",
+    "js/home.js": "/assets/js/home.js",
+    "css/common.css": "/assets/css/common.css",
+    "css/home.css": "/assets/css/home.css"
+  }
+}
